@@ -1,2 +1,27 @@
 {
+	"name": "lsx/lsx-health-plan",
+	"description": "LSX Health Plan plugin adds the ability to include a structured exercise and nutrition programme to your WordPress website using the LSX Theme and extensions",
+	"version": "0.3.0",
+	"type": "library",
+	"keywords": ["lsx", "health", "plan"],
+	"homepage": "https://lsx.lsdev.biz/documentation/lsx-health-plan/",
+	"time": "2019-07-02",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "LightSpeed",
+			"email": "support@lsdev.biz",
+			"homepage": "https://lsdev.biz",
+			"role": "Developer"
+		}
+	],
+	"support": {
+		"email": "support@lsdev.biz",
+		"issues": "https://github.com/lightspeeddevelopment/lsx-health-plan/issues",
+		"source": "https://github.com/lightspeeddevelopment/lsx-health-plan",
+		"docs": "https://lsx.lsdev.biz/documentation/lsx-health-plan/"
+	},
+    "require": {
+        "squizlabs/php_codesniffer": "^3.4"
+    }
 }
