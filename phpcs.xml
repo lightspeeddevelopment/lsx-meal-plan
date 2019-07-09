@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<!--
+	Customize the rules WP Enforcer uses by editing this file according to PHP_CodeSniffer's
+	ruleset.xml standard: https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml
+-->
+<ruleset name="WP-Enforcer">
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<rule ref="WordPress">
+		<!-- We will not fix these -->
+		<exclude name="Generic.ControlStructures.InlineControlStructure.NotAllowed" />
+		<exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" />
+
+		<!-- Fix on next LSX release (PHP Comments) -->
+		<exclude name="Generic.Commenting" />
+		<exclude name="Squiz.Commenting" />
+
+		<!-- Fix on next release -->
+		<exclude name="WordPress.Functions.DontExtract.extract_extract" />
+
+		<exclude name="Generic.Files.LowercasedFilename" />
+        <exclude name="WordPress.NamingConventions.ValidVariableName.NotSnakeCase" />		
+	</rule>
+</ruleset>

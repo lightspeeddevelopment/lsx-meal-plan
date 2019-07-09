@@ -62,7 +62,7 @@ class Downloads {
 		$connections['dlm_download']['connected_meals']    = 'connected_downloads';
 		$connections['dlm_download']['connected_recipes']  = 'connected_downloads';
 
-		//Post Type Connections
+		// Post Type Connections.
 		$connections['workout']['connected_downloads'] = 'connected_workouts';
 		$connections['meal']['connected_downloads']    = 'connected_meals';
 		$connections['recipe']['connected_downloads']  = 'connected_recipes';
@@ -74,66 +74,72 @@ class Downloads {
 	 * Define the metabox and field configurations.
 	 */
 	public function downloads_post_type_metaboxes() {
-		$cmb = new_cmb2_box( array(
-			'id'           => $this->slug . '_connections_metabox',
-			'title'        => __( 'Connections', 'lsx-health-plan' ),
-			'object_types' => array( 'dlm_download' ), // Post type
-			'context'      => 'normal',
-			'priority'     => 'high',
-			'show_names'   => true,
-		) );
-		$cmb->add_field( array(
-			'name'       => __( 'Pages', 'lsx-health-plan' ),
-			'id'         => 'connected_pages',
-			'type'       => 'post_search_ajax',
-			// Optional :
-			'limit'      => 10,  // Limit selection to X items only (default 1)
-			'sortable'   => true, // Allow selected items to be sortable (default false)
-			'query_args' => array(
-				'post_type'      => array( 'page' ),
-				'post_status'    => array( 'publish' ),
-				'posts_per_page' => -1,
-			),
-		) );
-		$cmb->add_field( array(
-			'name'       => __( 'Workouts', 'lsx-health-plan' ),
-			'id'         => 'connected_workouts',
-			'type'       => 'post_search_ajax',
-			// Optional :
-			'limit'      => 10,  // Limit selection to X items only (default 1)
-			'sortable'   => true, // Allow selected items to be sortable (default false)
-			'query_args' => array(
-				'post_type'      => array( 'workout' ),
-				'post_status'    => array( 'publish' ),
-				'posts_per_page' => -1,
-			),
-		) );
-		$cmb->add_field( array(
-			'name'       => __( 'Meals', 'lsx-health-plan' ),
-			'id'         => 'connected_meals',
-			'type'       => 'post_search_ajax',
-			// Optional :
-			'limit'      => 10,  // Limit selection to X items only (default 1)
-			'sortable'   => true,  // Allow selected items to be sortable (default false)
-			'query_args' => array(
-				'post_type'      => array( 'meal' ),
-				'post_status'    => array( 'publish' ),
-				'posts_per_page' => -1,
-			),
-		) );
-		$cmb->add_field( array(
-			'name'       => __( 'Recipe', 'lsx-health-plan' ),
-			'id'         => 'connected_recipes',
-			'type'       => 'post_search_ajax',
-			// Optional :
-			'limit'      => 10, // Limit selection to X items only (default 1)
-			'sortable'   => true, // Allow selected items to be sortable (default false)
-			'query_args' => array(
-				'post_type'      => array( 'recipe' ),
-				'post_status'    => array( 'publish' ),
-				'posts_per_page' => -1,
-			),
-		) );
+		$cmb = new_cmb2_box(
+			array(
+				'id'           => $this->slug . '_connections_metabox',
+				'title'        => __( 'Connections', 'lsx-health-plan' ),
+				'object_types' => array( 'dlm_download' ),
+				'context'      => 'normal',
+				'priority'     => 'high',
+				'show_names'   => true,
+			)
+		);
+		$cmb->add_field(
+			array(
+				'name'       => __( 'Pages', 'lsx-health-plan' ),
+				'id'         => 'connected_pages',
+				'type'       => 'post_search_ajax',
+				'limit'      => 10,
+				'sortable'   => true,
+				'query_args' => array(
+					'post_type'      => array( 'page' ),
+					'post_status'    => array( 'publish' ),
+					'posts_per_page' => -1,
+				),
+			)
+		);
+		$cmb->add_field(
+			array(
+				'name'       => __( 'Workouts', 'lsx-health-plan' ),
+				'id'         => 'connected_workouts',
+				'type'       => 'post_search_ajax',
+				'limit'      => 10,
+				'sortable'   => true,
+				'query_args' => array(
+					'post_type'      => array( 'workout' ),
+					'post_status'    => array( 'publish' ),
+					'posts_per_page' => -1,
+				),
+			)
+		);
+		$cmb->add_field(
+			array(
+				'name'       => __( 'Meals', 'lsx-health-plan' ),
+				'id'         => 'connected_meals',
+				'type'       => 'post_search_ajax',
+				'limit'      => 10,
+				'sortable'   => true,
+				'query_args' => array(
+					'post_type'      => array( 'meal' ),
+					'post_status'    => array( 'publish' ),
+					'posts_per_page' => -1,
+				),
+			)
+		);
+		$cmb->add_field(
+			array(
+				'name'       => __( 'Recipe', 'lsx-health-plan' ),
+				'id'         => 'connected_recipes',
+				'type'       => 'post_search_ajax',
+				'limit'      => 10,
+				'sortable'   => true,
+				'query_args' => array(
+					'post_type'      => array( 'recipe' ),
+					'post_status'    => array( 'publish' ),
+					'posts_per_page' => -1,
+				),
+			)
+		);
 	}
 
 	/**
@@ -142,27 +148,30 @@ class Downloads {
 	 * @return void
 	 */
 	public function download_connections() {
-		$cmb = new_cmb2_box( array(
-			'id'           => $this->slug . '_metabox',
-			'title'        => __( 'Downloads', 'lsx-health-plan' ),
-			'object_types' => array( 'workout', 'meal', 'recipe' ), // Post type
-			'context'      => 'normal',
-			'priority'     => 'high',
-			'show_names'   => true,
-		) );
-		$cmb->add_field( array(
-			'name'       => __( 'Downloads', 'lsx-health-plan' ),
-			'desc'       => __( "Add the pdf's connected to this day plan, using the field provided.", 'lsx-health-plan' ),
-			'id'         => 'connected_downloads',
-			'type'       => 'post_search_ajax',
-			// Optional
-			'limit'      => 15,  // Limit selection to X items only (default 1)
-			'sortable'   => true, // Allow selected items to be sortable (default false)
-			'query_args' => array(
-				'post_type'      => array( 'dlm_download' ),
-				'post_status'    => array( 'publish' ),
-				'posts_per_page' => -1,
-			),
-		) );
+		$cmb = new_cmb2_box(
+			array(
+				'id'           => $this->slug . '_metabox',
+				'title'        => __( 'Downloads', 'lsx-health-plan' ),
+				'object_types' => array( 'workout', 'meal', 'recipe' ),
+				'context'      => 'normal',
+				'priority'     => 'high',
+				'show_names'   => true,
+			)
+		);
+		$cmb->add_field(
+			array(
+				'name'       => __( 'Downloads', 'lsx-health-plan' ),
+				'desc'       => __( "Add the pdf's connected to this day plan, using the field provided.", 'lsx-health-plan' ),
+				'id'         => 'connected_downloads',
+				'type'       => 'post_search_ajax',
+				'limit'      => 15,
+				'sortable'   => true,
+				'query_args' => array(
+					'post_type'      => array( 'dlm_download' ),
+					'post_status'    => array( 'publish' ),
+					'posts_per_page' => -1,
+				),
+			)
+		);
 	}
 }
