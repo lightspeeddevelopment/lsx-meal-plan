@@ -1,4 +1,64 @@
 ## Change log
 
+### 1.3.0 (In Development)
+* Dev - Separated the "Snack" boxes from the Meal Plan columns.
+* Dev - Added in an archive description field for the recipes post type archive.
+* Dev - Integrated the recipes archive with the LSX Search plugin.
+* Dev - Added in the structure and styling for the Recipes Type taxonomy.
+* Fix - Fixed the un-prefixed functions
+* Fix - Refactored the recipes functions
+* Fix - Changing all the kg's and cm's in the detail boxes to just kg and cm (no plural).
+* Fix - Making sure the wrapper for the tip carousel doesnt output if there are not tips assigned.
+* Dev - Added a 'show_downloads' parameter to the weekly plan shortcode, which displays a list of the downloads added to the downloads category.
+* Dev - Refactored single plan tabs and the tab output, so they are passed through filters.
+
+### 1.2.0 - 19 December 2019
+* Dev - Added in translatable endpoint settings.
+* Dev - Added in placeholder image for Tips.
+* Fix - Spacing and margins fixes in general.
+* Fix - Styling fixes for the Daily Plan list on tablet view.
+* Dev - Improved the search results for Health Plan items.
+* Dev- Added in Settings to assign a default workout, recipe, warm up and meal type post.
+* Fix - Changed the setting id to mimic the meta_key, and added in a check for hs_attachement.
+* Dev - Adding in a setting to assign the default post type connections.
+* Fix - Made sure that connected ids in the "trash" do not show.
+* Dev - General testing to ensure compatibility with latest WordPress version (5.3).
+* Dev - Checking compatibility with LSX 2.6 release.
+
+### 1.1.1 30 October 2019
+* Fix - Added in a function to filters downloads that do not exist.
+* Fix - Applied the_content filters to the meal plan paragraphs and the workouts text #18
+* Fix - Fixed the string translations
+
+### 1.1 - October 23 2019
+* Fix - Day Ordering
+* Fix - HTML not displaying on Workouts
+* Fix - Updated placeholder text in fields on profile #10 & #9
+* Fix - Video modal not closing on mobile devices #13
+* Fix - Tips images distorting
+* Dev - Added drag-able Days in the back-end to re-order them #16
+
+### 1.0.5
+* Fix - Placeholder for Waist changed to cm on Edit Account Page.
+* Fix - Added a space between the value to make it neater and also change the Kg's to kg on my account page.
+
+### 1.0.4 - 13 September 2019
+* Fix - Downloads box will not have duplicated links
+* Fix - Removing the display non for the EFT page
+* Fix - Added in Fix for Recipe details on Mobile View
+* Dev - Activating github actions.
+
+### 1.0.3
+* Dev - Removed Peach Payments and added in Payfast on Checkout
+* Fix - Removed unnecessary link on Tips
+
+### 1.0.2
+* Dev - Changing icons to be inline svgs.
+* Fix - Fixing the week view order to be by date.
+* Fix - Recipes and shopping list box only appear if they are not empty on the Meal Plan Tab
+
+### 1.0.1
+* Fix - Style fixes and improvements on desktop and mobile.
+
 ### 1.0
 * Initial release

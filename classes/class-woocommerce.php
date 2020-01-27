@@ -26,6 +26,9 @@ class Woocommerce {
 		add_filter( 'woocommerce_order_button_text', array( $this, 'checkout_button_text' ), 10, 1 );
 		add_filter( 'woocommerce_get_breadcrumb', array( $this, 'breadcrumbs' ), 30, 1 );
 
+		// Checkout.
+		add_action( 'woocommerce_checkout_after_order_review', array( $this, 'payment_gateway_logos' ) );
+
 		// Redirect to the Edit Account Template.
 		add_filter( 'template_include', array( $this, 'account_endpoint_redirect' ), 99 );
 
@@ -43,6 +46,9 @@ class Woocommerce {
 		// Profile Fields.
 		add_filter( 'woocommerce_form_field_text', array( $this, 'lsx_profile_photo_field_filter' ), 10, 4 );
 		add_action( 'woocommerce_after_edit_account_form', array( $this, 'action_woocommerce_after_edit_account_form' ), 10, 0 );
+
+		// Lost Password fields
+		add_action( 'woocommerce_before_lost_password_form', array( $this, 'lost_password_page_title' ), 10 );
 
 		add_action( 'wp', array( $this, 'allow_reset_password_page' ), 9 );
 	}
@@ -161,12 +167,14 @@ class Woocommerce {
 		}
 
 		foreach ( $fields as $key => $field_args ) {
-			if ( empty( $_POST[ $key ] ) && wp_verify_nonce( sanitize_key( $_POST[ $key ] ) ) ) {
+			if ( isset( $_POST[ $key ] ) && empty( $_POST[ $key ] ) && wp_verify_nonce( sanitize_key( $_POST[ $key ] ) ) ) {
 				$fields[ $key ]['value'] = '';
 				continue;
 			}
 
-			$fields[ $key ]['value'] = sanitize_key( $_POST[ $key ] );
+			if ( isset( $_POST[ $key ] ) ) {
+				$fields[ $key ]['value'] = sanitize_key( $_POST[ $key ] );
+			}
 		}
 
 		return $fields;
@@ -179,8 +187,12 @@ class Woocommerce {
 		$fields            = $this->get_account_fields();
 		$is_user_logged_in = is_user_logged_in();
 
-		echo wp_kses_post( '<h2 class="title-lined my-stats-title">My Stats</h2>' );
+		echo wp_kses_post( '<h2 class="title-lined my-stats-title">' . __( 'My Stats', 'lsx-health-plan' ) . '</h2>' );
 		echo wp_kses_post( '<div class="my-stats">' );
+
+		echo wp_kses_post( '<p class="form-row form-label">' . __( 'Start', 'lsx-health-plan' ) . '</p>' );
+		echo wp_kses_post( '<p class="form-row form-label">' . __( 'Goal', 'lsx-health-plan' ) . '</p>' );
+		echo wp_kses_post( '<p class="form-row form-label">' . __( 'End', 'lsx-health-plan' ) . '</p>' );
 
 		foreach ( $fields as $key => $field_args ) {
 			$value = null;
@@ -340,7 +352,7 @@ class Woocommerce {
 	public function iconic_print_user_admin_fields() {
 		$fields = $this->get_account_fields();
 		?>
-		<h2><?php esc_html_e( 'Additional Information', 'iconic' ); ?></h2>
+		<h2><?php esc_html_e( 'Additional Information', 'lsx-health-plan' ); ?></h2>
 		<table class="form-table" id="iconic-additional-information">
 			<tbody>
 			<?php foreach ( $fields as $key => $field_args ) { ?>
@@ -392,7 +404,7 @@ class Woocommerce {
 
 			if ( empty( $_POST[ $key ] ) ) {
 				/* translators: %s: field */
-				$message = sprintf( __( '%s is a required field.', 'iconic' ), '<strong>' . $field_args['label'] . '</strong>' );
+				$message = sprintf( __( '%s is a required field.', 'lsx-health-plan' ), '<strong>' . $field_args['label'] . '</strong>' );
 				$errors->add( $key, $message );
 			}
 		}
@@ -414,7 +426,7 @@ class Woocommerce {
 
 			if ( $args['required'] ) {
 				$args['class'][] = 'validate-required';
-				$required        = ' <abbr class="required" title="' . esc_attr__( 'required', 'woocommerce' ) . '">*</abbr>';
+				$required        = ' <abbr class="required" title="' . esc_attr__( 'required', 'lsx-health-plan' ) . '">*</abbr>';
 			} else {
 				$required = '';
 			}
@@ -461,7 +473,7 @@ class Woocommerce {
 			$sort            = $args['priority'] ? $args['priority'] : '';
 			$field_container = '<p class="form-row %1$s" id="%2$s" data-priority="' . esc_attr( $sort ) . '">%3$s</p>';
 			$args['class'][] = 'validate-required';
-			$required        = ' <abbr class="required" title="' . esc_attr__( 'required', 'woocommerce' ) . '">*</abbr>';
+			$required        = ' <abbr class="required" title="' . esc_attr__( 'required', 'lsx-health-plan' ) . '">*</abbr>';
 
 			$field .= '<input accept="image/*" type="file" class="input-text ' . esc_attr( implode( ' ', $args['input_class'] ) ) . '" name="' . esc_attr( $key ) . '" id="' . esc_attr( $args['id'] ) . '" placeholder="' . esc_attr( $args['placeholder'] ) . '"  value="" ' . implode( ' ', $custom_attributes ) . ' />';
 
@@ -502,8 +514,8 @@ class Woocommerce {
 		return apply_filters( 'iconic_account_fields', array(
 			'weight_start'  => array(
 				'type'                 => 'text',
-				'label'                => __( 'Weight', 'lsx-health-plan' ),
-				'placeholder'          => 'kg’s',
+				'label'                => __( 'Weight:', 'lsx-health-plan' ),
+				'placeholder'          => __( 'kg', 'lsx-health-plan' ),
 				'hide_in_account'      => false,
 				'hide_in_admin'        => false,
 				'hide_in_checkout'     => false,
@@ -512,8 +524,8 @@ class Woocommerce {
 			),
 			'weight_goal'   => array(
 				'type'                 => 'text',
-				'label'                => __( 'Weight', 'lsx-health-plan' ),
-				'placeholder'          => 'kg’s',
+				'label'                => __( 'Weight:', 'lsx-health-plan' ),
+				'placeholder'          => __( 'kg', 'lsx-health-plan' ),
 				'hide_in_account'      => false,
 				'hide_in_admin'        => false,
 				'hide_in_checkout'     => false,
@@ -522,8 +534,8 @@ class Woocommerce {
 			),
 			'weight_end'    => array(
 				'type'                 => 'text',
-				'label'                => __( 'Weight', 'lsx-health-plan' ),
-				'placeholder'          => 'kg’s',
+				'label'                => __( 'Weight:', 'lsx-health-plan' ),
+				'placeholder'          => __( 'kg', 'lsx-health-plan' ),
 				'hide_in_account'      => false,
 				'hide_in_admin'        => false,
 				'hide_in_checkout'     => false,
@@ -532,8 +544,8 @@ class Woocommerce {
 			),
 			'waist_start'   => array(
 				'type'                 => 'text',
-				'label'                => __( 'Waist', 'lsx-health-plan' ),
-				'placeholder'          => 'kg’s',
+				'label'                => __( 'Waist:', 'lsx-health-plan' ),
+				'placeholder'          => __( 'cm', 'lsx-health-plan' ),
 				'hide_in_account'      => false,
 				'hide_in_admin'        => false,
 				'hide_in_checkout'     => false,
@@ -542,8 +554,8 @@ class Woocommerce {
 			),
 			'waist_goal'    => array(
 				'type'                 => 'text',
-				'label'                => __( 'Waist', 'lsx-health-plan' ),
-				'placeholder'          => 'kg’s',
+				'label'                => __( 'Waist:', 'lsx-health-plan' ),
+				'placeholder'          => __( 'cm', 'lsx-health-plan' ),
 				'hide_in_account'      => false,
 				'hide_in_admin'        => false,
 				'hide_in_checkout'     => false,
@@ -552,8 +564,8 @@ class Woocommerce {
 			),
 			'waist_end'     => array(
 				'type'                 => 'text',
-				'label'                => __( 'Waist', 'lsx-health-plan' ),
-				'placeholder'          => 'kg’s',
+				'label'                => __( 'Waist:', 'lsx-health-plan' ),
+				'placeholder'          => __( 'cm', 'lsx-health-plan' ),
 				'hide_in_account'      => false,
 				'hide_in_admin'        => false,
 				'hide_in_checkout'     => false,
@@ -562,7 +574,7 @@ class Woocommerce {
 			),
 			'fitness_start' => array(
 				'type'                 => 'text',
-				'label'                => __( 'Fitness Test Score', 'lsx-health-plan' ),
+				'label'                => __( 'Fitness Test Score:', 'lsx-health-plan' ),
 				'placeholder'          => '#',
 				'hide_in_account'      => false,
 				'hide_in_admin'        => false,
@@ -572,7 +584,7 @@ class Woocommerce {
 			),
 			'fitness_goal'  => array(
 				'type'                 => 'text',
-				'label'                => __( 'Fitness Test Score', 'lsx-health-plan' ),
+				'label'                => __( 'Fitness Test Score:', 'lsx-health-plan' ),
 				'placeholder'          => '#',
 				'hide_in_account'      => false,
 				'hide_in_admin'        => false,
@@ -582,7 +594,7 @@ class Woocommerce {
 			),
 			'fitness_end'   => array(
 				'type'                 => 'text',
-				'label'                => __( 'Fitness Test Score', 'lsx-health-plan' ),
+				'label'                => __( 'Fitness Test Score:', 'lsx-health-plan' ),
 				'placeholder'          => '#',
 				'hide_in_account'      => false,
 				'hide_in_admin'        => false,
@@ -624,5 +636,29 @@ class Woocommerce {
 			}
 		}
 		return $classes;
+	}
+
+	public function lost_password_page_title() {
+		?>
+		<h1 class="lost-your-password-title"><?php esc_html_e( 'Lost your password?', 'lsx-health-plan' ); ?></h1>
+		<?php
+	}
+
+	/**
+	 * Add Lets Enrypt and PayFast logos to cart.
+	**/
+	public function payment_gateway_logos() {
+		$encript_image = LSX_HEALTH_PLAN_URL . 'assets/images/le-logo.svg';
+		$payfast_image   = LSX_HEALTH_PLAN_URL . 'assets/images/secure-payments.png';
+		?>
+		<div class="row text-center vertical-align">
+			<div class="col-md-6 col-sm-6 col-xs-6">
+				<img src="<?php echo esc_url( $encript_image ); ?>" alt="lets_encrypt"/>
+			</div>
+			<div class="col-md-6 col-sm-6 col-xs-6">
+				<img src="<?php echo esc_url( $payfast_image ); ?>" alt="payfast"/>
+			</div>
+		</div>
+		<?php
 	}
 }

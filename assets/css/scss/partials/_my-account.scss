@@ -42,19 +42,10 @@
 				}
 			}
 			&.active {
-				.my-plan-tab {
+				a{
 					&::after {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/my-plan-wht.svg');
-					}
-				}
-				.account-details-tab {
-					&::after {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/edit-account-wht.svg');
-					}
-				}
-				.logout-tab {
-					&::after {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/logout-wht.svg');
+						color: white;
+						opacity: 1;
 					}
 				}
 			}
@@ -87,40 +78,37 @@
 					height: 25px;
 					background-repeat: no-repeat;
 					background-position: center;
+					font-family: FontAwesome;
+					font-size: 25px;
+					position: relative;
+					bottom: 7px;
+					color: $blue;
+					opacity: 0.5;
 					@media (max-width:600px) {
 						width: 100%;
 						height: 20px;
 						margin: 5px 0 0 0;
 					}
 				}
+				&:hover {
+					&::after {
+						opacity: 1;
+						color: white;
+					}
+				}
 				&.my-plan-tab {
 					&::after {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/my-plan.svg');
-					}
-					&:hover {
-						&::after {
-							background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/my-plan-wht.svg');
-						}
+						content: '\f0e4';
 					}
 				}
 				&.account-details-tab {
 					&::after {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/edit-account.svg');
-					}
-					&:hover {
-						&::after {
-							background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/edit-account-wht.svg');
-						}
+						content: '\f007';
 					}
 				}
 				&.logout-tab {
 					&::after {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/logout.svg');
-					}
-					&:hover {
-						&::after {
-							background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/logout-wht.svg');
-						}
+						content: '\f090';
 					}
 				}
 				@media (max-width:334px) {
@@ -238,6 +226,31 @@
 				color: $white;
 			}
 		}
+		@media (max-width:768px) {
+			.daily-plan-block {
+				&.week-grid {
+					.week-row {
+						.week-row-inner {
+							justify-content: flex-start;
+							.day {
+									margin-right: 12px;
+							}
+						}
+					}
+				}
+			}
+		}
+		@media (max-width: 500px) {
+			.daily-plan-block.week-grid {
+				.week-row {
+					.week-row-inner {
+						.day.completed {
+							padding: 5px;
+						}
+					}
+				}
+			}
+		}		
 		@media (min-width:900px) {
 			max-width: 120px;
 		}
@@ -259,7 +272,7 @@
 					font-family: FontAwesome;
 					font-size: 82px;
 					color: #dcdcdc;
-					font-weight: 300
+					font-weight: 300;
 				}
 			}
 		}
@@ -330,34 +343,108 @@
 		}
 		.week-row {
 			.week-row-inner {
-				display: flex;
-				justify-content: space-between;
-				align-items: center;
-				flex-wrap: wrap;
-				.day {
-					background: none;
-					&:not(.completed) {
-						border: 3px solid $blue;
-						border-radius: 50px;
-						height: 100px;
-						width: 100px;
-						background: rgba(65, 138, 208, 0.3);
-						text-align: center;
+				.week-meals-recipes-box {
+					.week-meals-recipes-box-inner {
 						display: flex;
-						justify-content: center;
-					}
-					&:hover {
-						&:not(.completed) {
-							background: $blue;
+						justify-content: space-between;
+						align-items: center;
+						flex-wrap: wrap;
+						.day {
+							background: none;
+							&:not(.completed) {
+								border: 4px solid $blue;
+								border-radius: 50px;
+								height: 100px;
+								width: 100px;
+								background: rgba(65, 138, 208, 0.3);
+								text-align: center;
+								display: flex;
+								justify-content: center;
+							}
+							&:hover {
+								&:not(.completed) {
+									background: $blue;
+									.plan-content {
+										color: $white;
+									}
+								}
+							}
 							.plan-content {
-								color: $white;
+								font-family: 'Noto Sans', sans-serif;
+								font-weight: 300;
+								text-transform: uppercase;
 							}
 						}
 					}
-					.plan-content {
-						font-family: 'Noto Sans', sans-serif;
-						font-weight: 300;
-						text-transform: uppercase;
+				}
+				&.week-downloads-view-on {
+					display: flex;
+					justify-content: space-between;
+					@media (max-width:1024px) {
+						flex-direction: column;
+					}
+					.week-meals-recipes-box {
+						padding-right: 5px;
+						flex-grow: 1;
+						h3 {
+							background-color: $light_gray;
+							padding: 10px 16px;
+							margin-bottom: 16px;
+							display: flex;
+							svg {
+								margin-right: 10px;
+							}
+						}
+						.week-meals-recipes-box-inner {
+							.day {
+								&.completed {
+									.plan-content {
+										font-size: 0;
+										&:before {
+											font-size: 50px;
+											color: #F1F1F1;
+											@media (max-width:1024px) {
+												font-size: 66px;
+											}
+										}
+									}
+								}
+								&:not(.completed) {
+									height: 75px;
+									width: 75px;
+									margin-right: 5px;
+									padding: 5px;
+									.plan-content {
+										font-size: 18px;
+										font-weight: bold;
+										line-height: 24px;
+									}
+								}
+							}
+						}
+					}
+					.week-download-box {
+						background-color: $light_gray;
+						padding: 10px 16px;
+						margin-bottom: 5px;
+						flex-grow: 1;
+						.title {
+							display: flex;
+							svg {
+								margin-right: 10px;
+							}
+						}
+						.week-download-box-list {
+							a {
+								background: none;
+								font-size: 15px;
+								line-height: 24px;
+								padding: 0;
+								font-weight: normal;
+								font-family: 'Noto Sans', sans-serif;
+								margin: 0;
+							}
+						}
 					}
 				}
 			}
@@ -384,7 +471,7 @@
 		padding: 30px;
 		background: $white; 
 		.title-lined, .woocommerce {
-			max-width: 760px;
+			max-width: 800px;
 			margin-left: 0;
 		}
 		.woocommerce {
@@ -395,6 +482,12 @@
 				label, span em {
 					font-weight: 300;
 				}
+				label {
+					word-break: break-word;
+				}
+				p:last-child {
+					margin-top:20px;
+				}
 			}
 		}
 		.my-stats-title {
@@ -403,54 +496,20 @@
 		.my-stats {
 			display: flex;
 			flex-wrap: wrap;
+
+			p:last-child {
+				margin-top:0px !important;
+			}
+
 			.form-row{
-				&:before {
+				&:first-child, &:nth-child(2), &:nth-child(3){
+					margin-bottom: 20px;
 					color: $blue;
 					font-size: 22px;
 				}
-				&:first-child{
-					&:before {
-						content: "Start";
-						margin-bottom: 20px;
-					}
-				}
-				&:nth-child(2) {
-					&:before {
-						content: "Goal";
-						margin-bottom: 20px;
-					}
-				}
-				&:nth-child(3) {
-					&:before {
-						content: "End";
-						margin-bottom: 20px;
-					}
-				}
-				@media (max-width:900px) {
-					flex-grow: 1;
-					width: 33%;
-				}
-				@media (max-width:600px) {
-					flex-grow: 1;
-  					width: 100%;
-					&:nth-child(2), &:nth-child(3) {
-						&:before {
-							content:none;
-						}
-					}
-					&:nth-child(4) {
-						&:before {
-							content: "Goal";
-							margin-bottom: 20px;
-						}
-					}
-					&:nth-child(7) {
-						&:before {
-							content: "End";
-							margin-bottom: 20px;
-						}
-					}
-				}
+				padding-right: 15px !important;
+				flex-grow: 1;
+				width: 33.333%;
 			}
 		}
 		.wpua-edit-container {
@@ -459,18 +518,14 @@
 				font-size: 0;
 				display: flex;
 				flex-direction: column;
-				&:before {
-					content: "My Profile Picture";
-					font-size: 30px;
-					padding-bottom: 20px;
-					margin-bottom: 20px;
-					border-bottom: 2px solid $blue;
-				}
-				&:after {
-					content: "Please upload an image of yourself in .jpeg format. Images should be square, to best fit the cropping area, and files sizes kept below 500kb";
-					font-family: 'Noto Sans', sans-serif;
-					font-size: 15px;
-				}
+				font-size: 30px;
+				padding-bottom: 20px;
+				margin-bottom: 20px;
+				border-bottom: 2px solid $blue;
+			}
+			p.tagline {
+				font-family: 'Noto Sans', sans-serif;
+				font-size: 15px;
 			}
 			#wpua-add-existing {
 				background-color: #dcdcdc;
@@ -513,5 +568,4 @@
 			}
 		}
 	}
-	
 }

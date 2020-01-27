@@ -8,8 +8,17 @@
 
 <?php
 $warm_up = get_post_meta( get_the_ID(), 'plan_warmup', true );
-if ( false !== $warm_up && '' !== $warm_up ) {
+if ( false === $warm_up || '' === $warm_up ) {
+	$options = \lsx_health_plan\functions\get_option( 'all' );
+	if ( isset( $options['plan_warmup'] ) && '' !== $options['plan_warmup'] && ! empty( $options['plan_warmup'] ) ) {
+		$warm_up = $options['plan_warmup'];
+	}
+}
 
+if ( false !== $warm_up && '' !== $warm_up ) {
+	if ( ! is_array( $warm_up ) ) {
+		$warm_up = array( $warm_up );
+	}
 	$warmup_query = new WP_Query(
 		array(
 			'post__in'  => $warm_up,

@@ -1,6 +1,6 @@
 {
   "name": "lsx-health-plan",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "LSX Health Plan for building LSX theme extensions",
   "main": "gulpfile.js",
   "scripts": {
@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/lightspeeddevelopment/lsx-health-plan#readme",
   "devDependencies": {
-    "gulp": "^3.9.1",
+    "gulp": "^4.0.2",
     "gulp-autoprefixer": "^3.1.1",
     "gulp-gettext": "^0.3.0",
     "gulp-jshint": "^2.0.4",

@@ -9,7 +9,7 @@ $portion      = get_post_meta( get_the_ID(), 'recipe_portion', true );
 		<?php
 		if ( ! empty( $prep_time ) ) {
 		?>
-		<tr>
+		<tr class="prep-time">
 		<td><?php esc_html_e( 'Prep time: ', 'lsx-health-plan' ); ?></td>
 			<td>
 			<?php
@@ -23,7 +23,7 @@ $portion      = get_post_meta( get_the_ID(), 'recipe_portion', true );
 		<?php
 		if ( ! empty( $cooking_time ) ) {
 		?>
-		<tr>
+		<tr class="cooking-time">
 			<td><?php esc_html_e( 'Cooking time: ', 'lsx-health-plan' ); ?></td>
 			<td>
 			<?php
@@ -37,7 +37,7 @@ $portion      = get_post_meta( get_the_ID(), 'recipe_portion', true );
 		<?php
 		if ( ! empty( $serves ) ) {
 		?>
-		<tr>
+		<tr class="serves">
 			<td><?php esc_html_e( 'Serves: ', 'lsx-health-plan' ); ?></td>
 			<td>
 			<?php
@@ -51,7 +51,7 @@ $portion      = get_post_meta( get_the_ID(), 'recipe_portion', true );
 		<?php
 		if ( ! empty( $portion ) ) {
 		?>
-		<tr>
+		<tr class="portion-size">
 			<td><?php esc_html_e( 'Portion size: ', 'lsx-health-plan' ); ?></td>
 			<td>
 			<?php

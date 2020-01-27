@@ -23,7 +23,16 @@ function has_attached_post( $post_id = '', $meta_key = '', $single = true ) {
 	}
 	$items = get_post_meta( $post_id, $meta_key, $single );
 	if ( '' !== $items && false !== $items && 0 !== $items ) {
-		$has_post = true;
+		$items = check_posts_exist( $items );
+		if ( ! empty( $items ) ) {
+			$has_post = true;
+		}
+	} else {
+		// Check for defaults.
+		$options = get_option( 'all' );
+		if ( isset( $options[ $meta_key ] ) && '' !== $options[ $meta_key ] && ! empty( $options[ $meta_key ] ) ) {
+			$has_post = true;
+		}
 	}
 	return $has_post;
 }
@@ -40,7 +49,7 @@ function get_option( $key = '', $default = false ) {
 		return cmb2_get_option( 'lsx_health_plan_options', $key, $default );
 	}
 	// Fallback to get_option if CMB2 is not loaded yet.
-	$opts = get_option( 'lsx_health_plan_options', $default );
+	$opts = \get_option( 'lsx_health_plan_options', $default );
 	$val  = $default;
 	if ( 'all' === $key ) {
 		$val = $opts;
@@ -51,25 +60,6 @@ function get_option( $key = '', $default = false ) {
 }
 
 /**
- * Add Lets Enrypt and Peach Payments logos to cart
- **/
-
-add_action( 'woocommerce_checkout_after_order_review', function() {
-	$encript_image = LSX_HEALTH_PLAN_URL . 'assets/images/le-logo.svg';
-	$peach_image   = LSX_HEALTH_PLAN_URL . 'assets/images/peach-payments-logo.svg';
-	?>
-	<div class="row text-center vertical-align">
-		<div class="col-md-6 col-sm-6 col-xs-6">
-			<img src="<?php echo esc_url( $encript_image ); ?>" alt="lets_encrypt"/>
-		</div>
-		<div class="col-md-6 col-sm-6 col-xs-6">
-			<img src="<?php echo esc_url( $peach_image ); ?>" alt="peach_payments"/>
-		</div>
-	</div>
-	<?php
-});
-
-/**
  * Returns the downloads attached to the items
  * @since  0.1.0
  * @param  string $key     Options array key
@@ -77,19 +67,27 @@ add_action( 'woocommerce_checkout_after_order_review', function() {
  * @return mixed           Option value
  */
 function get_downloads( $type = 'all', $post_id = '' ) {
-	$post_types = array(
-		'page',
-		'meal',
-		'workout',
-		'recipe',
-		'video',
-	);
+	$lsx_health_plan = \lsx_health_plan();
+	$post_types      = $lsx_health_plan->get_post_types();
 	if ( '' === $post_id ) {
 		$post_id = get_the_ID();
 	}
 	$downloads = array();
+	$options   = get_option( 'all' );
+
 	foreach ( $post_types as $post_type ) {
 		if ( 'all' === $type || in_array( $type, $post_types, true ) ) {
+
+			// Get the default downloads for this post type.
+			$default_downloads = array();
+			$new_downloads     = array();
+			if ( isset( $options[ 'download_' . $post_type ] ) ) {
+				if ( is_array( $options[ 'download_' . $post_type ] ) ) {
+					$default_downloads = $options[ 'download_' . $post_type ];
+				} else {
+					$default_downloads[] = $options[ 'download_' . $post_type ];
+				}
+			}
 
 			if ( 'page' === $post_type ) {
 				$key = 'plan_warmup';
@@ -102,13 +100,84 @@ function get_downloads( $type = 'all', $post_id = '' ) {
 				foreach ( $connected_items as $connected_item ) {
 					$current_downloads = get_post_meta( $connected_item, 'connected_downloads', true );
 					if ( false !== $current_downloads && ! empty( $current_downloads ) ) {
-						$downloads = array_merge( $downloads, $current_downloads );
+						$new_downloads = array_merge( $new_downloads, $current_downloads );
 					}
 				}
 			}
+
+			if ( ! empty( $new_downloads ) ) {
+				$downloads = array_merge( $downloads, $new_downloads );
+			} elseif ( ! empty( $default_downloads ) ) {
+				$downloads = array_merge( $downloads, $default_downloads );
+			}
+			$downloads = array_unique( $downloads );
 		}
 	}
+	$downloads = check_posts_exist( $downloads );
 	return $downloads;
+}
+
+/**
+ * Returns the weekly downloads for the week name
+ *
+ * @param  string $week    Week name 'week-1'.
+ * @return array           an array of the downloads or empty.
+ */
+function get_weekly_downloads( $week = '' ) {
+	$downloads = array();
+	if ( '' !== $week ) {
+		$saved_downloads = get_transient( 'lsx_hp_weekly_downloads_' . $week );
+		if ( false !== $saved_downloads && ! empty( $saved_downloads ) ) {
+			$downloads = $saved_downloads;
+		} else {
+			$args = array(
+				'orderby'        => 'title',
+				'order'          => 'ASC',
+				'post_type'      => 'dlm_download',
+				'posts_per_page' => -1,
+				'nopagin'        => true,
+				'fields'         => 'ids',
+				'tax_query'      => array(
+					array(
+						'taxonomy' => 'dlm_download_category',
+						'field'    => 'slug',
+						'terms'    => array( $week ),
+					),
+				),
+			);
+			$download_query = new \WP_Query( $args );
+			if ( $download_query->have_posts() ) {
+				$downloads = $download_query->posts;
+			}
+		}
+	}
+	$downloads = check_posts_exist( $downloads );
+	return $downloads;
+}
+
+/**
+ * Checks to see if the downloads exist before adding them
+ *
+ * @param array $post_ids
+ * @return void
+ */
+function check_posts_exist( $post_ids = array() ) {
+	$new_ids = array();
+	global $wpdb;
+	if ( is_array( $post_ids ) && ! empty( $post_ids ) ) {
+		$post_ids = "'" . implode( "','", $post_ids ) . "'";
+		$query    = "
+			SELECT `ID` 
+			FROM `{$wpdb->posts}`
+			WHERE `ID` IN ({$post_ids})
+			AND `post_status` != 'trash'
+		";
+		$results = $wpdb->get_results( $query ); // WPCS: unprepared SQL
+		if ( ! empty( $results ) ) {
+			$new_ids = wp_list_pluck( $results, 'ID' );
+		}
+	}
+	return $new_ids;
 }
 
 /**
@@ -144,15 +213,13 @@ function output_modal( $args = array() ) {
 	<div class="modal fade lsx-health-plan-modal" id="<?php echo esc_html( $args['id'] ); ?>" tabindex="-1" role="dialog" aria-labelledby="<?php echo esc_html( $args['id'] ); ?>"  aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>			
 				<div class="modal-header">
 					<?php
 					if ( '' !== $args['title'] ) {
 						echo wp_kses_post( '<h2>' . $args['title'] . '</h2>' );
 					}
 					?>
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-					</button>
 				</div>
 				<div class="modal-body">
 				<?php

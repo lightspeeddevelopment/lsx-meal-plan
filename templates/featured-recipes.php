@@ -31,7 +31,7 @@ $recipes = new WP_Query( $args );
 					<div class="row">
 						<div class="col-md-5 col-sm-6">
 							<h4 class="lsx-recipes-title"><?php the_title(); ?></h4>
-							<?php table_recipe_data(); ?>
+							<?php lsx_health_plan_recipe_data(); ?>
 							<a href="<?php echo esc_url( get_permalink() ); ?>" class="btn"><?php esc_html_e( 'View Recipe', 'lsx-health-plan' ); ?></a>
 						</div>
 						<div class="col-md-7 col-sm-6">

@@ -53,15 +53,15 @@ function my_profile_box() {
  */
 function day_plan_box( $args = array() ) {
 	$defaults = array(
-		'week_view' => false,
+		'week_view'      => false,
+		'show_downloads' => false,
 	);
 	$args     = wp_parse_args( $args, $defaults );
-
 	ob_start();
 	if ( false === $args['week_view'] ) {
 		echo lsx_health_plan_day_plan_block(); // WPCS: XSS OK.
 	} else {
-		echo lsx_health_plan_week_plan_block(); // WPCS: XSS OK.
+		echo lsx_health_plan_week_plan_block( $args ); // WPCS: XSS OK.
 	}
 	$content = ob_get_clean();
 	return $content;

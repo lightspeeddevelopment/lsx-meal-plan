@@ -10,6 +10,50 @@
 			}
 		}
 	}
+	.recipe-image {
+		img, .recipe-data {
+			width: 100%;
+			@media (min-width: 992px) {
+				max-width: 440px;	
+			}
+			@media (min-width: 1200px) {
+				max-width: 490px;	
+			}
+		}
+		.recipe-data {
+			background: white;
+			padding: 2.4rem;
+			margin-bottom: 4.25rem;
+			.recipe-table {
+				margin-bottom: 0;
+			}
+			tbody {
+				display: grid;
+				grid-template-columns: auto auto;
+				tr {
+					display: table-row;
+					grid-template-columns: 50% 50%;
+				}
+				td:first-child {
+					color: $blue;
+				}
+				@media (max-width:600px) {
+					display:block;
+				}
+			}
+		}
+	}
+	.recipe-content {
+		margin-bottom: 8.5rem;
+		@media (max-width: 600px) {
+			.back-plan-btn {
+				margin-top: 4.25rem;
+				.btn {
+					width: 100%;
+				}
+			}
+		}
+	}
 	.bottom-single-recipe {
 		margin-top: 4.25rem;
 		p {

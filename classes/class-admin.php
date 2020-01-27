@@ -101,11 +101,13 @@ class Admin {
 	 * @return void
 	 */
 	public function save_previous_values( $value_to_save, $a, $args, $cmb2 ) {
-		$connections = $this->get_connections();
-		$post_type   = get_post_type( $cmb2->data_to_save['ID'] );
-		if ( isset( $connections[ $post_type ] ) && array_key_exists( $a['field_id'], $connections[ $post_type ] ) ) {
-			// Get the previous values if the field, so we can run through them and remove the current ID from them later.
-			$this->previous_values = get_post_meta( $a['id'], $a['field_id'], true );
+		if ( isset( $cmb2->data_to_save['ID'] ) ) {
+			$connections = $this->get_connections();
+			$post_type   = get_post_type( $cmb2->data_to_save['ID'] );
+			if ( isset( $connections[ $post_type ] ) && array_key_exists( $a['field_id'], $connections[ $post_type ] ) ) {
+				// Get the previous values if the field, so we can run through them and remove the current ID from them later.
+				$this->previous_values = get_post_meta( $a['id'], $a['field_id'], true );
+			}
 		}
 		return $value_to_save;
 	}
@@ -123,21 +125,23 @@ class Admin {
 		}
 
 		// If the field has been updated.
-		$post_type = get_post_type( $cmb2->data_to_save['ID'] );
-		if ( isset( $connections[ $post_type ] ) && array_key_exists( $field_id, $connections[ $post_type ] ) ) {
-			$saved_values = get_post_meta( $cmb2->data_to_save['ID'], $field_id, true );
+		if ( isset( $cmb2->data_to_save['ID'] ) ) {
+			$post_type = get_post_type( $cmb2->data_to_save['ID'] );
+			if ( isset( $connections[ $post_type ] ) && array_key_exists( $field_id, $connections[ $post_type ] ) ) {
+				$saved_values = get_post_meta( $cmb2->data_to_save['ID'], $field_id, true );
 
-			if ( 'updated' === $action ) {
-				$this->add_connected_posts( $saved_values, $cmb2->data_to_save['ID'], $connections[ $post_type ][ $field_id ] );
-				// Check if any posts have been removed.
-				if ( count( $this->previous_values ) > count( $saved_values ) ) {
-					$posts_to_remove = array_diff( $this->previous_values, $saved_values );
-					if ( ! empty( $posts_to_remove ) ) {
-						$this->remove_connected_posts( $posts_to_remove, $cmb2->data_to_save['ID'], $connections[ $post_type ][ $field_id ] );
+				if ( 'updated' === $action ) {
+					$this->add_connected_posts( $saved_values, $cmb2->data_to_save['ID'], $connections[ $post_type ][ $field_id ] );
+					// Check if any posts have been removed.
+					if ( count( $this->previous_values ) > count( $saved_values ) ) {
+						$posts_to_remove = array_diff( $this->previous_values, $saved_values );
+						if ( ! empty( $posts_to_remove ) ) {
+							$this->remove_connected_posts( $posts_to_remove, $cmb2->data_to_save['ID'], $connections[ $post_type ][ $field_id ] );
+						}
 					}
+				} else if ( 'removed' === $action && ! empty( $this->previous_values ) ) {
+					$this->remove_connected_posts( $this->previous_values, $cmb2->data_to_save['ID'], $connections[ $post_type ][ $field_id ] );
 				}
-			} else if ( 'removed' === $action && ! empty( $this->previous_values ) ) {
-				$this->remove_connected_posts( $this->previous_values, $cmb2->data_to_save['ID'], $connections[ $post_type ][ $field_id ] );
 			}
 		}
 	}

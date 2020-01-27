@@ -150,6 +150,15 @@ class Meal {
 			'show_names'   => true,
 		) );
 		$cmb->add_field( array(
+			'name'       => __( 'Pre Breakfast Snack', 'lsx-health-plan' ),
+			'id'         => $this->slug . '_pre_breakfast_snack',
+			'type'       => 'wysiwyg',
+			'show_on_cb' => 'cmb2_hide_if_no_cats',
+			'options'    => array(
+				'textarea_rows' => 5,
+			),
+		) );
+		$cmb->add_field( array(
 			'name'       => __( 'Breakfast', 'lsx-health-plan' ),
 			'id'         => $this->slug . '_breakfast',
 			'type'       => 'wysiwyg',
@@ -159,8 +168,17 @@ class Meal {
 			),
 		) );
 		$cmb->add_field( array(
-			'name'       => __( 'Breakfast Snack', 'lsx-health-plan' ),
+			'name'       => __( 'Post Breakfast Snack', 'lsx-health-plan' ),
 			'id'         => $this->slug . '_breakfast_snack',
+			'type'       => 'wysiwyg',
+			'show_on_cb' => 'cmb2_hide_if_no_cats',
+			'options'    => array(
+				'textarea_rows' => 5,
+			),
+		) );
+		$cmb->add_field( array(
+			'name'       => __( 'Pre Lunch Snack', 'lsx-health-plan' ),
+			'id'         => $this->slug . '_pre_lunch_snack',
 			'type'       => 'wysiwyg',
 			'show_on_cb' => 'cmb2_hide_if_no_cats',
 			'options'    => array(
@@ -177,8 +195,17 @@ class Meal {
 			),
 		) );
 		$cmb->add_field( array(
-			'name'       => __( 'Lunch Snack', 'lsx-health-plan' ),
+			'name'       => __( 'Post Lunch Snack', 'lsx-health-plan' ),
 			'id'         => $this->slug . '_lunch_snack',
+			'type'       => 'wysiwyg',
+			'show_on_cb' => 'cmb2_hide_if_no_cats',
+			'options'    => array(
+				'textarea_rows' => 5,
+			),
+		) );
+		$cmb->add_field( array(
+			'name'       => __( 'Pre Dinner Snack', 'lsx-health-plan' ),
+			'id'         => $this->slug . '_pre_dinner_snack',
 			'type'       => 'wysiwyg',
 			'show_on_cb' => 'cmb2_hide_if_no_cats',
 			'options'    => array(
@@ -188,6 +215,15 @@ class Meal {
 		$cmb->add_field( array(
 			'name'       => __( 'Dinner', 'lsx-health-plan' ),
 			'id'         => $this->slug . '_dinner',
+			'type'       => 'wysiwyg',
+			'show_on_cb' => 'cmb2_hide_if_no_cats',
+			'options'    => array(
+				'textarea_rows' => 5,
+			),
+		) );
+		$cmb->add_field( array(
+			'name'       => __( 'Post Dinner Snack', 'lsx-health-plan' ),
+			'id'         => $this->slug . '_dinner_snack',
 			'type'       => 'wysiwyg',
 			'show_on_cb' => 'cmb2_hide_if_no_cats',
 			'options'    => array(

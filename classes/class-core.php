@@ -38,18 +38,16 @@ class Core {
 	public $integrations;
 
 	/**
-	 * The post types available
-	 *
-	 * @var array
+	 * @var object \lsx_health_plan\classes\Integrations();
 	 */
-	public $post_types = array();
+	public $scpo_engine;
 
 	/**
 	 * Contructor
 	 */
 	public function __construct() {
-		$this->load_classes();
 		$this->load_includes();
+		$this->load_classes();
 	}
 
 	/**
@@ -86,6 +84,9 @@ class Core {
 
 		require_once LSX_HEALTH_PLAN_PATH . 'classes/class-integrations.php';
 		$this->integrations = Integrations::get_instance();
+
+		require_once LSX_HEALTH_PLAN_PATH . 'classes/class-scpo-engine.php';
+		$this->scpo_engine = SCPO_Engine::get_instance();
 	}
 
 	/**
@@ -104,6 +105,13 @@ class Core {
 	 * @return void
 	 */
 	public function get_post_types() {
-		return apply_filters( 'lsx_health_plan_post_types', $this->post_types );
+		$post_types = apply_filters( 'lsx_health_plan_post_types', $this->post_types );
+		foreach ( $post_types as $index => $post_type ) {
+			$is_disabled = \cmb2_get_option( 'lsx_health_plan_options', $post_type . '_disabled', false );
+			if ( true === $is_disabled || 1 === $is_disabled || 'on' === $is_disabled ) {
+				unset( $post_types[ $index ] );
+			}
+		}
+		return $post_types;
 	}
 }

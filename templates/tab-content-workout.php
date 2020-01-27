@@ -28,6 +28,7 @@
 		?>
 		<div class="single-plan-inner workout-content">
 			<div class="single-plan-section-title workout">
+				<?php lsx_get_svg_icon( 'work.svg' ); ?>
 				<h2 class="title-lined"><?php esc_html_e( 'My Workout', 'lsx-health-plan' ); ?> <span class="blue-title"><?php the_title(); ?></span></h2>
 			</div>
 			<?php
@@ -36,16 +37,16 @@
 				<div class="workout-instructions">
 					<div class="row">
 						<div class="col-md-6">
-							<h3>Dont forget your warm up!</h3>
-							<p>Be sure to do the warm-up before every workout session.</p>
+							<h3><?php esc_html_e( 'Dont forget your warm up!', 'lsx-health-plan' ); ?></h3>
+							<p><?php esc_html_e( 'Be sure to do the warm-up before every workout session.', 'lsx-health-plan' ); ?></p>
 						</div>
 						<div class="col-md-6">
 							<div class="single-plan-inner-buttons">
 								<div class="complete-plan-btn">
-									<a class="btn border-btn" href="#"><?php esc_html_e( 'Download Warm-Up', 'lsx-health-plan' ); ?></a>
+									<a class="btn border-btn dwnld-btn" href="#"><?php esc_html_e( 'Download Warm-Up', 'lsx-health-plan' ); ?></a>
 								</div>
 								<div  class="back-plan-btn">
-									<a class="btn secondary-btn" href="<?php the_permalink(); ?>warm-up/"><?php esc_html_e( 'See Warm-Up', 'lsx-health-plan' ); ?></a>
+									<a class="btn secondary-btn wrm-up-btn" href="<?php the_permalink(); ?>warm-up/"><?php esc_html_e( 'See Warm-Up', 'lsx-health-plan' ); ?></a>
 								</div>
 							</div>
 						</div>
@@ -58,7 +59,13 @@
 				<?php
 				$connected_workouts = get_post_meta( get_the_ID(), 'connected_workouts', true );
 				if ( empty( $connected_workouts ) ) {
-					return;
+					$options = \lsx_health_plan\functions\get_option( 'all' );
+					if ( isset( $options['connected_workouts'] ) && '' !== $options['connected_workouts'] && ! empty( $options['connected_workouts'] ) ) {
+						$connected_workouts = $options['connected_workouts'];
+						if ( ! array( $connected_workouts ) ) {
+							$connected_workouts = array( $connected_workouts );
+						}
+					}
 				}
 				$args     = array(
 					'orderby'   => 'date',
@@ -90,7 +97,7 @@
 							<div class="set-box set content-box">
 								<h3 class="set-title"><?php echo esc_html( $section_title ); ?></h3>
 								<div class="set-content">
-									<p><?php echo esc_html( $description ); ?></p>
+									<p><?php echo wp_kses_post( apply_filters( 'the_content', $description ) ); ?></p>
 								</div>
 
 								<?php
@@ -103,9 +110,11 @@
 										<table class="workout-table">
 											<tbody>
 												<tr>
-													<th>Workout</th> 
-													<th class="center-mobile">Reps / Time / Distance</th>
-													<th class="center-mobile">Video</th>
+													<th><?php esc_html_e( 'Workout', 'lsx-health-plan' ); ?></th> 
+													<th class="center-mobile"><?php esc_html_e( 'Reps / Time / Distance', 'lsx-health-plan' ); ?></th>
+													<?php if ( post_type_exists( 'video' ) ) { ?>
+														<th class="center-mobile"><?php esc_html_e( 'Video', 'lsx-health-plan' ); ?></th>
+													<?php } ?>
 												</tr>
 												<?php
 												foreach ( $groups as $group ) {
@@ -121,9 +130,11 @@
 													<tr>
 														<td class="workout-title-item"><?php echo esc_html( $workout_name ); ?></td>
 														<td class="reps-field-item center-mobile"><?php echo esc_html( $workout_reps ); ?></td>
-														<td class="video-button-item center-mobile">
-															<?php lsx_health_plan_workout_video_play_button( $m, $group ); ?>
-														</td>
+														<?php if ( post_type_exists( 'video' ) ) { ?>
+															<td class="video-button-item center-mobile">
+																<?php lsx_health_plan_workout_video_play_button( $m, $group ); ?>
+															</td>
+														<?php } ?>
 													</tr>
 													<?php
 													$m++;

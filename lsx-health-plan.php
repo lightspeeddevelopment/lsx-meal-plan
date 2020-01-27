@@ -2,9 +2,9 @@
 /*
  * Plugin Name:	LSX Health Plan
  * Plugin URI:	https://github.com/lightspeeddevelopment/lsx-health-plan
- * Description:	A meal and workout plan, with recipes
+ * Description:	LSX Health Plan extension adds a meal and workout plan, with recipes.
  * Author:		LightSpeed
- * Version: 	1.0.0
+ * Version: 	1.2.0
  * Author URI: 	https://www.lsdev.biz/
  * License: 	GPL3
  * Text Domain: lsx-health-plan
@@ -18,14 +18,14 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'LSX_HEALTH_PLAN_PATH', plugin_dir_path( __FILE__ ) );
 define( 'LSX_HEALTH_PLAN_CORE', __FILE__ );
 define( 'LSX_HEALTH_PLAN_URL', plugin_dir_url( __FILE__ ) );
-define( 'LSX_HEALTH_PLAN_VER', '1.0.0' );
+define( 'LSX_HEALTH_PLAN_VER', '1.2.0' );
 
 /* ======================= Below is the Plugin Class init ========================= */
 
 require_once LSX_HEALTH_PLAN_PATH . '/classes/class-core.php';
 
 /**
- * Remove unnesesary custom post types
+ * Remove unnecessary custom post types
  *
  * @return void
  */
@@ -42,7 +42,7 @@ add_action( 'add_meta_boxes', 'lsx_remove_extra_meta_box', 100 );
 /**
  * Create Login page with woocommerce shortcode if the page is not created
  */
-if ( ( isset( $_GET['activated'] ) && wp_verify_nonce( sanitize_key( $_GET['activated'] ) ) ) && is_admin() ) {
+if ( ( isset( $_GET['activated'] ) && function_exists( 'wp_verify_nonce' ) && wp_verify_nonce( sanitize_key( $_GET['activated'] ) ) ) && is_admin() ) {
 
 	$new_page_title = 'Login';
 	// Content to add spacing and woocommerce login shortcode
@@ -74,7 +74,7 @@ if ( ( isset( $_GET['activated'] ) && wp_verify_nonce( sanitize_key( $_GET['acti
 }
 
 /**
- * Add Loing Logut Button to Main Menu
+ * Add Login Logout Button to Main Menu
  *
  * @param [type] $items
  * @param [type] $args
@@ -87,7 +87,11 @@ function lsx_add_login_logout_register_menu( $items, $args ) {
 		$loginoutlink = ob_get_contents();
 		ob_end_clean();
 		if ( ! is_user_logged_in() ) {
-			$items .= '<li class="my-login menu-item"><a rel="nofollow" href="/login/">Login</a></li>';
+			$login_slug = \lsx_health_plan\functions\get_option( 'login_slug', false );
+			if ( false === $login_slug ) {
+				$login_slug = 'login';
+			}
+			$items .= '<li class="my-login menu-item"><a rel="nofollow" href="/' . $login_slug . '/">' . __( 'Login', 'lsx-health-plan' ) . '</a></li>';
 		} else {
 			$items .= '<li class="my-login menu-item">' . $loginoutlink . '</li>';
 		}
@@ -104,7 +108,11 @@ add_filter( 'wp_nav_menu_items', 'lsx_add_login_logout_register_menu', 199, 2 );
  * @return void
  */
 function lsx_login_redirect() {
-	return home_url( 'my-plan' );
+	$plan_slug = \lsx_health_plan\functions\get_option( 'my_plan_slug', false );
+	if ( false === $plan_slug ) {
+		$plan_slug = 'my-plan';
+	}
+	return home_url( $plan_slug );
 }
 add_filter( 'woocommerce_login_redirect', 'lsx_login_redirect' );
 
@@ -117,3 +125,20 @@ function lsx_health_plan() {
 	return \lsx_health_plan\classes\Core::get_instance();
 }
 lsx_health_plan();
+
+/**
+ * Creates the svg path
+ *
+ * @return void
+ */
+function lsx_get_svg_icon( $icon ) {
+	$path = '/assets/images/';
+
+	if ( file_exists( LSX_HEALTH_PLAN_PATH . $path . $icon ) ) {
+		// Load and return the contents of the file
+		return include LSX_HEALTH_PLAN_PATH . $path . $icon;
+	}
+
+	// Return a blank string if we can't find the file.
+	return '';
+}

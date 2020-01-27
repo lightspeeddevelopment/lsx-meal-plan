@@ -1,5 +1,14 @@
 // Single Plan
 
+.plan-template-default, .recipe-template-default {
+	.content-area, .widget-area {
+		margin-top: 4.5rem;
+		@media (max-width:768px) {
+			margin-top: 8.5rem;
+		}
+	}
+}
+
 #single-plan-nav {
 	margin-bottom: 15px;
 	.nav.nav-pills {
@@ -47,29 +56,14 @@
 				min-height: 90px;
 			}
 			&.active {
-				.overview-tab {
-					&::before {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/eye-w.svg');
-					}
-				}
-				.warm-up-tab {
-					&::before {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/warm-w.svg');
-					}
-				}
-				.workout-tab {
-					&::before {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/work-w.svg');
-					}
-				}
-				.meal-plan-tab {
-					&::before {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/meal-w.svg');
-					}
-				}
-				.recipes-tab {
-					&::before {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/recipes-w.svg');
+				svg {
+					g {
+						path {
+							stroke: white !important;
+						}
+						circle {
+							fill: white !important;
+						}
 					}
 				}
 			}
@@ -89,67 +83,54 @@
 					flex-direction: column;
     				text-align: center;
 				}
-				&::before {
-					content: '';
-					margin-right: 10px;
-					background-size: contain;
-					display: inline-block;
-					width: 25px;
-					height: 25px;
-					background-repeat: no-repeat;
-					background-position: center;
+				&.overview-tab {
+					svg {
+						position: relative;
+						top: 5px;
+					}
+				}
+				&.workout-tab {
+					svg {
+						max-width: 28px;
+					}
+				}
+				svg {
+					margin-right: 15px;
 					@media (max-width:600px) {
+						margin: 0 auto;
 						width: 100%;
 						height: 20px;
 					}
 				}
-				&.overview-tab {
-					&::before {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/eye.svg');
-					}
-					&:hover {
-						&::before {
-							background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/eye-w.svg');
+				&:hover {
+					svg {
+						g {
+							path {
+								stroke: white !important;
+							}
+							circle {
+								fill: white !important;
+							}
 						}
 					}
-				}
-				&.warm-up-tab {
-					&::before {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/warm.svg');
-					}
-					&:hover {
-						&::before {
-							background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/warm-w.svg');
+					&.workout-tab {
+						svg {
+							g {
+								fill: white !important;
+							}
 						}
 					}
-				}
-				&.workout-tab {
-					&::before {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/work.svg');
-					}
-					&:hover {
-						&::before {
-							background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/work-w.svg');
-						}
-					}
-				}
-				&.meal-plan-tab {
-					&::before {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/meal.svg');
-					}
-					&:hover {
-						&::before {
-							background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/meal-w.svg');
-						}
-					}
-				}
-				&.recipes-tab {
-					&::before {
-						background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/recipes.svg');
-					}
-					&:hover {
-						&::before {
-							background-image: url('/wp-content/plugins/lsx-health-plan/assets/images/recipes-w.svg');
+					&.warm-up-tab, &.recipes-tab {
+						svg {
+							g {
+								fill: white !important;
+							}
+							path {
+								stroke: transparent !important;
+							}
+							circle {
+								fill: transparent !important;
+							}
 						}
 					}
 				}
@@ -158,6 +139,19 @@
 				a {
 					background: $blue;
 					color: $white;
+				}
+				.warm-up-tab, .recipes-tab {
+					svg {
+						g {
+							fill: white !important;
+						}
+						path {
+							stroke: transparent !important;
+						}
+						circle {
+							fill: transparent !important;
+						}
+					}
 				}
 			}
 		}
@@ -175,13 +169,46 @@
 	}
 }
 
+@media (max-width: 600px) {
+	#edit-account-tab {
+		padding: 0 10px 20px;
+		margin-top: 0px;
+		margin-top: -45px;
+	}
+}
+
+.woocommerce-edit-account {
+	.wp-block-lsx-blocks-lsx-banner-box {
+		min-height: 200px;
+	}
+	.lsx-banner-image-wrap {
+		img {
+			min-width: 100%;
+			min-height: 200px;
+			object-fit: cover;
+			@media (max-width: 600px) {
+				min-height: 440px;
+			}
+		}
+	}
+}
+
+.menu-my-account.lsx-block-container.alignfull {
+	@media (max-width: 600px) {
+		.lsx-container-content {
+			padding: 0em 3em 1em;
+		}
+	}
+}
+
 .archive-plan {
 	.row {
 		display: flex;
 		flex-wrap: wrap;
 	}
 }
-.post-type-archive-recipe {
+.post-type-archive-recipe,
+.tax-recipe-type {
 	.bottom-single-recipe {
 		margin-top: 4.25rem;
 		margin-bottom: -8.4rem;
@@ -236,8 +263,9 @@
 			}
 			.title {
 				font-size: 30px;
-				display: flex;
-				justify-content: space-between;
+				display: grid;
+				grid-template-columns: 80% 20%;
+    			grid-template-rows: 50% 50%;
 				&::after {
 					content: '';
 					margin-right: 10px;
@@ -247,34 +275,10 @@
 					background-repeat: no-repeat;
 					background-position: center;
 				}
-				&.warm-up-title {
-					&::after {
-						background-image: url(/wp-content/plugins/lsx-health-plan/assets/images/warm.svg);
-					}
-				}
-				&.work-out-title {
-					&::after {
-						background-image: url(/wp-content/plugins/lsx-health-plan/assets/images/work.svg);
-						width: 45px;
-					}
-				}
-				&.meal-plan-title {
-					&::after {
-						background-image: url(/wp-content/plugins/lsx-health-plan/assets/images/meal.svg);
-						width: 35px;
-					}
-				}
-				&.recipes-title {
-					&::after {
-						background-image: url(/wp-content/plugins/lsx-health-plan/assets/images/recipes.svg);
-						width: 55px;
-					}
-				}
-				&.downloads-title {
-					&::after {
-						background-image: url(/wp-content/plugins/lsx-health-plan/assets/images/downloads.svg);
-						width: 55px;
-					}
+				svg {
+					width: 40px;
+					height: 40px;
+					justify-self: end;
 				}
 			}
 			.excerpt {
@@ -289,12 +293,19 @@
 				}
 			}
 		}
+		.day-download-box {
+			.lsx-health-plan-box {
+				@media (min-width:992px) {
+					justify-content: start;
+				}
+			}
+		}
 	}
 	.status-plan-buttons {
 		padding: 25px 20px;
 	}
 	.content-box {
-		margin: 30px 0;
+		margin: 0 0 30px;
 		background: $light_gray;
 		padding: 12px 16px;
 	}
@@ -303,30 +314,13 @@
 		font-weight: bold;
 	}
 	.single-plan-section-title {
-		&::before {
-			content: '';
-			margin-bottom: 15px;
-			background-size: contain;
-			display: inline-block;
+		svg {
 			width: 50px;
 			height: 50px;
-			background-repeat: no-repeat;
-			background-position: center;
 		}
-		&.meal-plan {
-			&::before {
-				background-image: url(/wp-content/plugins/lsx-health-plan/assets/images/meal.svg);
-			}
-		}
-		&.workout {
-			&::before {
-				background-image: url(/wp-content/plugins/lsx-health-plan/assets/images/work.svg);
+		&.workput {
+			svg {
 				width: 80px;
-			}
-		}
-		&.recipes-plan {
-			&::before {
-				background-image: url(/wp-content/plugins/lsx-health-plan/assets/images/recipes.svg);
 			}
 		}
 	}
@@ -479,5 +473,67 @@
 			}	
 		}
 		
+	}
+}
+
+.post-type-archive-recipe,
+.tax-recipe-type {
+	.archive-plan {
+		.row {
+			.col-md-4 {
+				.recipe-feature-img {
+					img {
+						width: 100%;
+					}
+				}
+				.content-box {
+					//min-height: 290px;
+					display: flex;
+					flex-direction: column;
+					justify-content: space-between;
+					padding: 15px 15px 0;
+					table {
+						flex-grow: 2;
+						display: flex;
+						td, th {
+							vertical-align: top;
+						}
+						.prep-time,
+						.cooking-time,
+						.portion-size {
+							display: none;
+						}
+					}
+					a {
+						margin-bottom: 1.5em;
+					}
+				}
+			}
+		}
+	}
+
+	.lsx-hp-archive-description {
+		margin-left: auto;
+		margin-right: auto;
+		width: 100%;
+		display: flex;
+		.description-wrapper {
+			margin-top: 4.25rem;
+			text-align: center;
+			max-width: 900px;
+			margin-left: auto;
+			margin-right: auto;
+			p {
+				margin-bottom:0px;
+			}
+		}
+	}
+
+	&.lsx-search-enabled {
+		.archive-plan {
+			.content-box {
+				margin: 0px 0 30px;
+			}
+		}
 	}
 }

@@ -42,12 +42,6 @@ get_header(); ?>
 	}
 	?>
 
-	<?php
-	if ( comments_open() ) {
-		comments_template();
-	}
-	?>
-
 </div><!-- #primary -->
 
 <?php lsx_content_wrap_after(); ?>

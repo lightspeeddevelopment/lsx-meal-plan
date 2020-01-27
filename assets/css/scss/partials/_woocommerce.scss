@@ -10,7 +10,7 @@
 
 body:not(.logged-in).woocommerce-account.my-plan {
 	.woocommerce {
-		max-width: 600px;
+		max-width: 550px;
 		margin-left: auto;
 		margin-right: auto;
 		p.woocommerce-LostPassword.lost_password {
@@ -18,18 +18,13 @@ body:not(.logged-in).woocommerce-account.my-plan {
 				color: #f7ae00;
 			}
 		}
+		h1.lost-your-password-title {
+			font-size: 30px;
+			display: block;
+			font-family: 'Lora', serif;
+			margin-bottom: 20px;
+		}
 		.woocommerce-ResetPassword.lost_reset_password {
-			p {
-				&:first-child {
-					&:before {
-						content: 'Lost your password?';
-						font-size: 30px;
-						display: block;
-						font-family: 'Lora', serif;
-						margin-bottom: 20px;
-					}
-				}
-			}
 			.woocommerce-form-row.form-row.form-row-first {
 				width: 100%;
 				label {
@@ -58,7 +53,6 @@ body:not(.logged-in).woocommerce-account.woocommerce-lost-password {
 		margin: 0 auto;
 
 		.woocommerce {
-			max-width: none;
 
 			form {
 				.form-row-first label {
@@ -73,11 +67,14 @@ body:not(.logged-in).woocommerce-account.woocommerce-lost-password {
 	}
 }
 
-// Order Received
-.woocommerce-page.woocommerce-order-received {
+body:not(.logged-in).woocommerce-login,
+body:not(.logged-in).content-restricted  {
 	.woocommerce {
-		display:none;
+		max-width: 550px;
+		margin-left: auto;
+		margin-right: auto;
 	}
+	
 }
 
 // Banners 
@@ -121,7 +118,12 @@ body:not(.logged-in).woocommerce-account.woocommerce-lost-password {
 }
 
 // Login page
-.page.login, .page.content-restricted {
+.page.login, .page.content-restricted,
+.recipe-template-default,
+.post-type-archive-recipe,
+.tax-recipe-type,
+.my-plan,
+.single-plan {
 	#footer-cta, #footer-widgets {
 		display: none;
 	}

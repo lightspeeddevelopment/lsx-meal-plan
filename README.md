@@ -1,4 +1,4 @@
-<h1 align="center"><a href="https://lsx-demo.lsdev.biz/"><img src="https://www.lsdev.biz/wp-content/uploads/2019/05/LSXHLogo.svg" alt="WooCommerce"></a></h1>
+<h1 align="center"><a href="https://lsx-demo.lsdev.biz/"><img src="https://www.lsdev.biz/wp-content/uploads/2019/05/LSXHLogo.svg" alt="Health"></a></h1>
 
 <p align="center">
   <a href="http://gulpjs.com/"><img src="https://img.shields.io/badge/built%20with-gulp.js-green.svg" alt="Built gulp.js"></a> 

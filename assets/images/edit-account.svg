@@ -1,9 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <svg width="11px" height="14px" viewBox="0 0 11 14" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 54.1 (76490) - https://sketchapp.com -->
-    <title>icon-edit-account-blue</title>
-    <desc>Created with Sketch.</desc>
-    <g id="My-Plan---Desktop-+-Mobile" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.5">
+    <g id="My-Plan-Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" opacity="0.5">
         <g id="My-Account/Dashboard----Weekly-PLan" transform="translate(-531.000000, -244.000000)" fill="#418AD0" fill-rule="nonzero">
             <g id="icon-edit-account-blue" transform="translate(531.000000, 244.214272)">
                 <path d="M10.7142985,10.6389636 C10.7142985,11.8610632 9.9107261,12.8571582 8.93137225,12.8571582 L1.78292623,12.8571582 C0.803572387,12.8571582 2.66453526e-15,11.8610632 2.66453526e-15,10.6389636 C2.66453526e-15,8.43751006 0.54408547,5.89286417 2.73716844,5.89286417 C3.41518264,6.55413728 4.33594267,6.96429402 5.35714924,6.96429402 C6.37835582,6.96429402 7.29911584,6.55413728 7.97713005,5.89286417 C10.170213,5.89286417 10.7142985,8.43751006 10.7142985,10.6389636 Z M8.57143879,3.21428955 C8.57143879,4.98884523 7.13170493,6.42857909 5.35714924,6.42857909 C3.58259356,6.42857909 2.1428597,4.98884523 2.1428597,3.21428955 C2.1428597,1.43973386 3.58259356,1.77635684e-15 5.35714924,1.77635684e-15 C7.13170493,1.77635684e-15 8.57143879,1.43973386 8.57143879,3.21428955 Z" id=""></path>

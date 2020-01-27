@@ -31,7 +31,7 @@ class Frontend {
 	 * Contructor
 	 */
 	public function __construct() {
-		add_action( 'wp_enqueue_scripts', array( $this, 'assets' ), 999 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'assets' ), 5 );
 
 		require_once LSX_HEALTH_PLAN_PATH . 'classes/class-endpoints.php';
 		$this->endpoints = Endpoints::get_instance();
@@ -71,6 +71,7 @@ class Frontend {
 	public function assets() {
 		wp_enqueue_style( 'lsx-health-plan', LSX_HEALTH_PLAN_URL . 'assets/css/lsx-health-plan.css', array(), LSX_HEALTH_PLAN_VER );
 		wp_style_add_data( 'lsx-health-plan', 'rtl', 'replace' );
+		wp_enqueue_script( 'lsx-health-plan-scripts', LSX_HEALTH_PLAN_URL . 'assets/js/src/lsx-health-plan-admin.js', array( 'jquery' ) );
 	}
 
 	/**

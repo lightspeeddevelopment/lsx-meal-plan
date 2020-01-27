@@ -1,5 +1,6 @@
 <?php
 namespace lsx_health_plan\classes;
+use lsx_health_plan\functions;
 
 /**
  * LSX Health Plan Admin Class.
@@ -37,10 +38,15 @@ class Post_Type {
 	public function __construct() {
 		$this->enable_post_types();
 		add_filter( 'lsx_health_plan_post_types', array( $this, 'enable_post_types' ) );
-		foreach ( $this->post_types as $post_type ) {
-			require_once LSX_HEALTH_PLAN_PATH . 'classes/class-' . $post_type . '.php';
-			$classname        = ucwords( $post_type );
-			$this->$post_type = call_user_func_array( '\\lsx_health_plan\classes\\' . $classname . '::get_instance', array() );
+		foreach ( $this->post_types as $index => $post_type ) {
+			$is_disabled = \lsx_health_plan\functions\get_option( $post_type . '_disabled', false );
+			if ( true === $is_disabled || 1 === $is_disabled || 'on' === $is_disabled ) {
+				unset( $this->post_types[ $index ] );
+			} else {
+				require_once LSX_HEALTH_PLAN_PATH . 'classes/class-' . $post_type . '.php';
+				$classname        = ucwords( $post_type );
+				$this->$post_type = call_user_func_array( '\\lsx_health_plan\classes\\' . $classname . '::get_instance', array() );
+			}
 		}
 	}
 

@@ -1,11 +1,11 @@
 === LSX Health Plan ===
 Contributors: feedmymedia
-Donate link: https://www.donate.lsdev.biz/
-Tags: lsx, health plan
-Requires at least: 4.3
-Tested up to: 5.2.1
+Donate link: https://donate.lsdev.biz/
+Tags: lsx, meal plan, workout, blocks, recipes
+Requires at least: 5.1.1
+Tested up to: 5.3.2
 Requires PHP: 7.0
-Stable tag: 1.0.0
+Stable tag: 1.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -22,7 +22,7 @@ Features include a Day plan with the following components:
 * Exercise videos / giphys
 
 == Gutenberg Compatible Plugin ==
-The *LSX Health Plan* is a fully Gutenberg compatible [WordPress](https://wordpress.org) plugin, powered by the latest software. 
+The *LSX Health Plan* is a fully Gutenberg compatible [WordPress](https://wordpress.org/) plugin, powered by the latest software. 
 
 == Works with the LSX Theme ==
 
@@ -34,7 +34,7 @@ We’re firm believers in open source – that’s why the LSX Health Plan plugi
 
 == Getting started with LSX Health Plan ==
 
-* Login to the backend of your Wordpress website.
+* Login to the backend of your WordPress website.
 * Navigate to the "Plugins" item in your dashboard.
 * Select "Add New".
 * Search for "LSX Health Plan" in the plugin search bar.
@@ -44,7 +44,7 @@ We’re firm believers in open source – that’s why the LSX Health Plan plugi
 
 == Documentation ==
 
-[LSX Health Plan Documentation](https://lsx.lsdev.biz/documentation/lsx-health-plan/) has everything you need to use the plugin.
+[LSX Health Plan Documentation](https://lsx.lsdev.biz/documentation/health-plan/) has everything you need to use the plugin.
 
 == Help & Support ==
 
@@ -52,7 +52,7 @@ Before logging a ticket with support, please make sure you have the latest versi
 
 Your WordPress website needs to be running PHP version 7.0 or higher in order to make use of the LSX Health Plan plugin.
 
-If you still require help with the LSX Health Plan Plugin, please log any bug issues you are having on the [Github Issues](https://github.com/lightspeeddevelopment/lsx-health-plan/issues) page, or send an email to [support@lsdev.biz](support@lsdev.biz).
+If you still require help with the LSX Health Plan Plugin, please log any bug issues you are having on the [Github Issues](https://github.com/lightspeeddevelopment/lsx-health-plan/issues/) page, or send an email to [support@lsdev.biz](support@lsdev.biz).
 
 == Contributing to the LSX Health Plan plugin ==
 

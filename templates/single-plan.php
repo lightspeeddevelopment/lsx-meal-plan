@@ -17,33 +17,9 @@ get_header(); ?>
 
 		<?php lsx_content_top(); ?>
 
-		<?php require LSX_HEALTH_PLAN_PATH . '/templates/single-plan-tabs.php'; ?>
+		<?php lsx_health_plan_single_nav(); ?>
 
-		<?php
-		$endpoint = get_query_var( 'endpoint' );
-		switch ( $endpoint ) {
-
-			case 'meal':
-				include LSX_HEALTH_PLAN_PATH . '/templates/tab-content-meal.php';
-				break;
-
-			case 'recipes':
-				include LSX_HEALTH_PLAN_PATH . '/templates/tab-content-recipes.php';
-				break;
-
-			case 'workout':
-				include LSX_HEALTH_PLAN_PATH . '/templates/tab-content-workout.php';
-				break;
-
-			case 'warm-up':
-				include LSX_HEALTH_PLAN_PATH . '/templates/tab-content-warm-up.php';
-				break;
-
-			default:
-				include LSX_HEALTH_PLAN_PATH . '/templates/tab-content-plan.php';
-				break;
-		}
-		?>
+		<?php lsx_health_plan_single_tabs(); ?>
 
 		<div class="row status-plan-buttons">
 			<?php lsx_health_plan_day_button(); ?>
