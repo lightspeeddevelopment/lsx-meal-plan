@@ -33,7 +33,6 @@ class Yoga {
 		add_action( 'init', array( $this, 'register_post_type' ) );
 		add_filter( 'lsx_health_plan_single_template', array( $this, 'enable_post_type' ), 10, 1 );
 		//add_filter( 'lsx_health_plan_connections', array( $this, 'enable_connections' ), 10, 1 );
-		//add_action( 'cmb2_admin_init', array( $this, 'details_metaboxes' ) );
 		//add_action( 'cmb2_admin_init', array( $this, 'workout_connections' ), 15 );
 	}
 
@@ -85,6 +84,7 @@ class Yoga {
 			'menu_position'      => null,
 			'supports'           => array(
 				'title',
+				'custom-fields',
 			),
 		);
 		register_post_type( 'yoga', $args );
@@ -113,106 +113,6 @@ class Yoga {
 		$connections['workout']['connected_videos'] = 'connected_workouts';
 		$connections['video']['connected_workouts'] = 'connected_videos';
 		return $connections;
-	}
-
-	/**
-	 * Define the metabox and field configurations.
-	 */
-	public function details_metaboxes() {
-		$workout_sections = apply_filters( 'lsx_health_plan_workout_sections_amount', 6 );
-		if ( false !== $workout_sections && null !== $workout_sections ) {
-			$i = 1;
-			while ( $i <= $workout_sections ) {
-
-				$cmb_group = new_cmb2_box( array(
-					'id'           => $this->slug . '_section_' . $i . '_metabox',
-					'title'        => esc_html__( 'Exercise Group ', 'lsx-health-plan' ) . $i,
-					'object_types' => array( $this->slug ),
-				) );
-
-				$cmb_group->add_field( array(
-					'name'       => __( 'Title', 'lsx-health-plan' ),
-					'id'         => $this->slug . '_section_' . $i . '_title',
-					'type'       => 'text',
-					'show_on_cb' => 'cmb2_hide_if_no_cats',
-				) );
-
-				$cmb_group->add_field( array(
-					'name'       => __( 'Description', 'lsx-health-plan' ),
-					'id'         => $this->slug . '_section_' . $i . '_description',
-					'type'       => 'wysiwyg',
-					'show_on_cb' => 'cmb2_hide_if_no_cats',
-					'options'    => array(
-						'textarea_rows' => 5,
-					),
-				) );
-
-				/**
-				 * Repeatable Field Groups
-				 */
-				// $group_field_id is the field id string, so in this case: $prefix . 'demo'
-				$group_field_id = $cmb_group->add_field( array(
-					'id'      => $this->slug . '_section_' . $i,
-					'type'    => 'group',
-					'options' => array(
-						'group_title'   => esc_html__( 'Exercise {#}', 'lsx-health-plan' ), // {#} gets replaced by row number
-						'add_button'    => esc_html__( 'Add New', 'lsx-health-plan' ),
-						'remove_button' => esc_html__( 'Delete', 'lsx-health-plan' ),
-						'sortable'      => true,
-					),
-				) );
-
-				$cmb_group->add_group_field( $group_field_id, array(
-					'name' => esc_html__( 'Workout Name', 'lsx-health-plan' ),
-					'id'   => 'name',
-					'type' => 'text',
-					// 'repeatable' => true, // Repeatable fields are supported w/in repeatable groups (for most types)
-				) );
-
-				$cmb_group->add_group_field( $group_field_id, array(
-					'name'    => __( 'Description', 'lsx-health-plan' ),
-					'id'      => 'description',
-					'type'    => 'wysiwyg',
-					'options' => array(
-						'textarea_rows' => 2,
-					),
-				) );
-
-				$cmb_group->add_group_field( $group_field_id, array(
-					'name' => esc_html__( 'Reps / Time / Distance', 'lsx-health-plan' ),
-					'id'   => 'reps',
-					'type' => 'text',
-					// 'repeatable' => true, // Repeatable fields are supported w/in repeatable groups (for most types)
-				) );
-
-				$cmb_group->add_group_field( $group_field_id, array(
-					'name'       => __( 'Equipment', 'lsx-health-plan' ),
-					'id'         => 'equipment',
-					'type'       => 'text',
-				) );
-				$cmb_group->add_group_field( $group_field_id, array(
-					'name'       => __( 'Muscle Group', 'lsx-health-plan' ),
-					'id'         => 'muscle',
-					'type'       => 'text',
-					'show_on_cb' => 'cmb2_hide_if_no_cats',
-				) );
-
-				$cmb_group->add_group_field( $group_field_id, array(
-					'name'       => __( 'Video related to this workout', 'lsx-health-plan' ),
-					'id'         => 'connected_videos',
-					'type'       => 'post_search_ajax',
-					// Optional :
-					'limit'      => 1, // Limit selection to X items only (default 1)
-					'sortable'   => true,  // Allow selected items to be sortable (default false)
-					'query_args' => array(
-						'post_type'      => array( 'video' ),
-						'post_status'    => array( 'publish' ),
-						'posts_per_page' => -1,
-					),
-				) );
-				$i++;
-			};
-		}
 	}
 
 	/**
