@@ -78,6 +78,7 @@ class Post_Type {
 			'recipe',
 			'tip',
 			'video',
+			'yoga',
 		);
 		$this->post_types = $post_types;
 		return $post_types;
