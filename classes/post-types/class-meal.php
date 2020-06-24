@@ -58,7 +58,7 @@ class Meal {
 	 */
 	public function register_post_type() {
 		$labels = array(
-			'name'               => esc_html__( 'Meal Plans', 'lsx-health-plan' ),
+			'name'               => esc_html__( 'Meal', 'lsx-health-plan' ),
 			'singular_name'      => esc_html__( 'Meals', 'lsx-health-plan' ),
 			'add_new'            => esc_html_x( 'Add New', 'post type general name', 'lsx-health-plan' ),
 			'add_new_item'       => esc_html__( 'Add New', 'lsx-health-plan' ),
@@ -70,7 +70,7 @@ class Meal {
 			'not_found'          => esc_html__( 'None found', 'lsx-health-plan' ),
 			'not_found_in_trash' => esc_html__( 'None found in Trash', 'lsx-health-plan' ),
 			'parent_item_colon'  => '',
-			'menu_name'          => esc_html__( 'Meal Plans', 'lsx-health-plan' ),
+			'menu_name'          => esc_html__( 'Meals', 'lsx-health-plan' ),
 		);
 		$args   = array(
 			'labels'             => $labels,
