@@ -68,7 +68,7 @@ class Plan {
 			'not_found'          => esc_html__( 'None found', 'lsx-health-plan' ),
 			'not_found_in_trash' => esc_html__( 'None found in Trash', 'lsx-health-plan' ),
 			'parent_item_colon'  => '',
-			'menu_name'          => esc_html__( 'Day Plans', 'lsx-health-plan' ),
+			'menu_name'          => esc_html__( 'Plans', 'lsx-health-plan' ),
 		);
 		$args   = array(
 			'labels'             => $labels,
@@ -84,12 +84,13 @@ class Plan {
 			),
 			'capability_type'    => 'post',
 			'has_archive'        => false,
-			'hierarchical'       => false,
+			'hierarchical'       => true,
 			'menu_position'      => null,
 			'supports'           => array(
 				'title',
 				'editor',
 				'thumbnail',
+				'page-attributes',
 			),
 		);
 		register_post_type( 'plan', $args );
